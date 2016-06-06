@@ -1,0 +1,19 @@
+# Lists files and folders that are not to be included in Git.
+
+# npm stuff
+node_modules/
+npm-debug.log
+
+# build outputs
+dist/
+lib/
+testResults/
+
+# system files
+.DS_Store
+Thumbs.db
+
+# visual studio code files
+.vscode/
+jsconfig.json
+tsconfig.json
