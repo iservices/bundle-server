@@ -1,6 +1,7 @@
 import * as bundle from 'build-bundle';
 import * as express from 'express';
 import * as compression from 'compression';
+import * as path from 'path';
 import PageBuilderMiddleware from './pageBuilderMiddleware';
 import errorHandlerMiddleware from './errorHandlerMiddleware';
 import gzipMiddleware from './gzipMiddleware';
@@ -22,8 +23,8 @@ export default function serverStart(workerId, options = {}) {
 
   // configure options
   const opts = {};
-  opts.distPath = inOpts.distPath;
-  opts.libPath = inOpts.libPath;
+  opts.distPath = path.normalize(inOpts.distPath);
+  opts.libPath = path.normalize(inOpts.libPath);
   opts.port = inOpts.port || process.env.PORT || 3000;
   opts.version = inOpts.version || '';
   opts.baseUrlPath = inOpts.baseUrlPath || '/dist';
