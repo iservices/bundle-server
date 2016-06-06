@@ -15,6 +15,7 @@ import gzipMiddleware from './gzipMiddleware';
  * @param {Number} [options.port] - The port number the server will listen on. Default is the PORT environment value or 3000 if that isn't set.
  * @param {String} [options.version] - The version number of the app the server is serving up.
  * @param {String} [options.baseUrlPath] - The base url for the server.  Default is '/dist'.
+ * @param {String|String[]} - [options.styles] - The urls for style sheets that should be included in every page.
  * @param {Boolean} [options.silent] - When set to true the server will not print startup info out to the console.  Default is false.
  * @returns {Object} The newly created and running server is returned.
  */
@@ -29,6 +30,7 @@ export default function serverStart(workerId, options = {}) {
   opts.version = inOpts.version || '';
   opts.baseUrlPath = inOpts.baseUrlPath || '/dist';
   opts.silent = inOpts.silent;
+  opts.styles = (typeof inOpts.styles === 'string') ? [inOpts.Styles] : inOpts.styles;
 
   // create express server
   const app = express();
@@ -50,7 +52,8 @@ export default function serverStart(workerId, options = {}) {
       baseUrlPath: opts.baseUrlPath,
       version: opts.version
     }),
-    baseUrl: opts.version ? `${opts.baseUrlPath}/${opts.version}/` : opts.baseUrlPath + '/'
+    baseUrl: opts.version ? `${opts.baseUrlPath}/${opts.version}/` : opts.baseUrlPath + '/',
+    styles: opts.styles
   });
   app.use(pageBuild.handleRequest.bind(pageBuild));
 

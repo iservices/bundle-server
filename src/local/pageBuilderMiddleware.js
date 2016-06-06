@@ -19,6 +19,9 @@ class PageBuilderMiddleware {
     this.libPath = options.libPath;
     this.bundleManager = options.bundleManager;
     this.baseUrl = options.baseUrl;
+    if (options.styles) {
+      this.styles = options.styles.map(style => `<link rel="stylesheet" type="text/css" href="${style}">`);
+    }
 
     const funcs = {};
     const tree = fto.createTreeSync(this.libPath, { filePattern: /[\\\/]package.js$/, excludeEmptyDirectories: true });
@@ -54,24 +57,28 @@ class PageBuilderMiddleware {
    * @returns {void}
    */
   handleRequest(req, res, next) {
+    const self = this;
+
     // get script tags
-    const scriptTags = this.bundleManager.getScriptTags(req.path, 'zip');
+    const scriptTags = self.bundleManager.getScriptTags(req.path, 'zip');
     if (!scriptTags) {
       // if the given path isn't an application return a 404 response
       res.set('cache-control', 'private, max-age=0, no-cache');
       res.status(404).send('Not found: ' + req.path);
     } else {
       // generate the html that will be returned to the client
-      const getPage = this.getPageFunction(req.path);
-      const pb = new PageBuilder();
-      pb.scripts = scriptTags;
-      pb.baseUrl = this.baseUrl || '/';
-
+      const getPage = self.getPageFunction(req.path);
       if (getPage) {
         getPage(req)
           .then(function (result) {
             res.set('cache-control', 'private, max-age=0, no-cache');
-            res.send(pb.renderToString(result.view, result.props));
+            res.send(PageBuilder.renderToTemplate({
+              view: result.view,
+              props: result.props,
+              scripts: scriptTags,
+              styles: self.styles,
+              baseUrl: self.baseUrl
+            }));
             if (next) {
               next();
             }
@@ -80,7 +87,7 @@ class PageBuilderMiddleware {
             errorHandler(err, req, res, next);
           });
       } else {
-        res.send(pb.renderToString(null));
+        res.send(PageBuilder.renderToTemplate());
       }
     }
   }
