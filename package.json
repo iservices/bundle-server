@@ -28,14 +28,14 @@
     "prepublish": "npm run build"
   },
   "dependencies": {
-    "build-bundle": "^2.0.0",
-    "build-transform": "^2.0.0",
     "compression": "^1.6.2",
     "express": "^4.13.4",
     "file-tree-object": "0.0.11",
     "flux-angular2": "^1.0.63"
   },
   "devDependencies": {
+    "build-bundle": "^2.0.0",
+    "build-transform": "^2.0.0",
     "build-lint": "^2.0.0",
     "build-test": "^2.0.0"
   }
