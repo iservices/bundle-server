@@ -1,6 +1,6 @@
 {
   "name": "bundle-server",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A server for applications using the build-bundle package.",
   "main": "index.js",
   "files": [
@@ -20,22 +20,23 @@
     "node": ">=4.2.1"
   },
   "scripts": {
-    "test": "gulp test",
-    "build": "gulp build",
-    "prepublish": "gulp build"
+    "lint": "build-lint \"src/**/*.js\" \"!src/public/**/*\" \"!src/styles/**/*\" \"!src/tests/fixtures/**/*\"",
+    "unit-test": "build-test \"lib/tests/**/*.spec.js\" -c \"lib/**/*.js\" -c \"!lib/tests/**/*.js\" -c \"!lib/**/package.js\" --lines 75",
+    "transform": "build-transform \"src/local/**/*.[tj]s\" \"src/tests/**/*.[tj]s\" \"!src/tests/fixtures/**/*\" -i src ",
+    "test": "npm run lint && npm run transform && npm run unit-test",
+    "build": "npm run transform",
+    "prepublish": "npm run build"
   },
   "dependencies": {
-    "build-bundle": "^1.1.40",
-    "build-transform": "^1.0.0",
+    "build-bundle": "^2.0.0",
+    "build-transform": "^2.0.0",
     "compression": "^1.6.2",
     "express": "^4.13.4",
     "file-tree-object": "0.0.11",
-    "flux-angular2": "^1.0.63",
-    "gulp": "^3.9.0"
+    "flux-angular2": "^1.0.63"
   },
   "devDependencies": {
-    "gulp-watch": "^4.3.5",
-    "build-lint": "^1.0.0",
-    "build-test": "^1.0.0"
+    "build-lint": "^2.0.0",
+    "build-test": "^2.0.0"
   }
 }

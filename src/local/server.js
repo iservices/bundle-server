@@ -1,4 +1,4 @@
-import * as bundle from 'build-bundle';
+import * as BundleManager from 'build-bundle';
 import * as express from 'express';
 import * as compression from 'compression';
 import * as path from 'path';
@@ -8,6 +8,7 @@ import gzipMiddleware from './gzipMiddleware';
 
 /**
  * Starts a server instance.
+ *
  * @param {Number} [workerId] - The worker id for the server.
  * @param {Object} options - Options for the server.
  * @param {String} options.distPath - The full path for the distribution folder.
@@ -15,9 +16,9 @@ import gzipMiddleware from './gzipMiddleware';
  * @param {Number} [options.port] - The port number the server will listen on. Default is the PORT environment value or 3000 if that isn't set.
  * @param {String} [options.version] - The version number of the app the server is serving up.
  * @param {String} [options.baseUrlPath] - The base url for the server.  Default is '/dist'.
- * @param {String|String[]} - [options.styles] - The urls for style sheets that should be included in every page.
+ * @param {String|String[]} [options.styles] - The urls for style sheets that should be included in every page.
  * @param {Boolean} [options.silent] - When set to true the server will not print startup info out to the console.  Default is false.
- * @returns {Object} The newly created and running server is returned.
+ * @return {Object} The newly created and running server is returned.
  */
 export default function serverStart(workerId, options = {}) {
   const inOpts = (typeof workerId === 'object') ? workerId : options;
@@ -47,7 +48,7 @@ export default function serverStart(workerId, options = {}) {
   // page builder middleware
   const pageBuild = new PageBuilderMiddleware({
     libPath: opts.libPath,
-    bundleManager: bundle.createManager({
+    bundleManager: new BundleManager({
       inputDir: opts.distPath,
       baseUrlPath: opts.baseUrlPath,
       version: opts.version

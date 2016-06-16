@@ -23,8 +23,8 @@ describe('/src/local/server', function () {
       let body = '';
       resp.on('data', function (data) { body += data; });
       resp.on('end', function () {
-        assert.ok(body.indexOf('<script src="/dist/packages/bundle-1.0.0.min.js.gz"') !== -1, 'package script tag is missing from body of response.');
-        assert.ok(body.indexOf('<script src="/dist/1.0.0/apps/example/bundle.min.js.gz"') !== -1, 'app script tag is missing from body of response.');
+        assert.ok(body.indexOf('<script src="/dist/packages/bundle-1.0.0.js.gz"') !== -1, 'package script tag is missing from body of response.');
+        assert.ok(body.indexOf('<script src="/dist/1.0.0/apps/example/bundle.js.gz"') !== -1, 'app script tag is missing from body of response.');
         server.close();
         done();
       });

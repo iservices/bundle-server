@@ -60,7 +60,7 @@ class PageBuilderMiddleware {
     const self = this;
 
     // get script tags
-    const scriptTags = self.bundleManager.getScriptTags(req.path, 'zip');
+    const scriptTags = self.bundleManager.getScriptTags(req.path, true);
     if (!scriptTags) {
       // if the given path isn't an application return a 404 response
       res.set('cache-control', 'private, max-age=0, no-cache');
