@@ -22,6 +22,9 @@ class PageBuilderMiddleware {
     if (options.styles) {
       this.styles = options.styles.map(style => `<link rel="stylesheet" type="text/css" href="${style}">`);
     }
+    if (options.shims) {
+      this.shims = options.shims.map(shim => this.bundleManager.formatScriptTag('apps', shim));
+    }
 
     const funcs = {};
     const tree = fto.createTreeSync(this.libPath, { filePattern: /[\\\/]package.js$/, excludeEmptyDirectories: true });
@@ -66,6 +69,22 @@ class PageBuilderMiddleware {
       res.set('cache-control', 'private, max-age=0, no-cache');
       res.status(404).send('Not found: ' + req.path);
     } else {
+      // insert shims
+      let tags = scriptTags;
+      if (this.shims) {
+        tags = [];
+        for (let i = 0; i < scriptTags.length - 1; i++) {
+          tags.push(scriptTags[i]);
+        }
+        for (let j = 0; j < this.shims.length; j++) {
+          tags.push(this.shims[j]);
+        }
+        if (scriptTags.length) {
+          tags.push(scriptTags[scriptTags.length - 1]);
+        }
+      }
+
+
       // generate the html that will be returned to the client
       const getPage = self.getPageFunction(req.path);
       if (getPage) {
@@ -75,7 +94,7 @@ class PageBuilderMiddleware {
             res.send(PageBuilder.renderToTemplate({
               view: result.view,
               props: result.props,
-              scripts: scriptTags,
+              scripts: tags,
               styles: self.styles,
               baseUrl: self.baseUrl
             }));

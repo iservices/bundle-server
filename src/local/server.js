@@ -17,6 +17,7 @@ import gzipMiddleware from './gzipMiddleware';
  * @param {String} [options.version] - The version number of the app the server is serving up.
  * @param {String} [options.baseUrlPath] - The base url for the server.  Default is '/dist'.
  * @param {String|String[]} [options.styles] - The urls for style sheets that should be included in every page.
+ * @param {String|String[]} [options.shims] - The urls for bundles that will be loaded before the app bundle but after any other bundle.
  * @param {Boolean} [options.silent] - When set to true the server will not print startup info out to the console.  Default is false.
  * @return {Object} The newly created and running server is returned.
  */
@@ -31,7 +32,8 @@ export default function serverStart(workerId, options = {}) {
   opts.version = inOpts.version || '';
   opts.baseUrlPath = inOpts.baseUrlPath || '/dist';
   opts.silent = inOpts.silent;
-  opts.styles = (typeof inOpts.styles === 'string') ? [inOpts.Styles] : inOpts.styles;
+  opts.styles = (typeof inOpts.styles === 'string') ? [inOpts.styles] : inOpts.styles;
+  opts.shims = (typeof inOpts.shims === 'string') ? [inOpts.shims] : inOpts.shims;
 
   // create express server
   const app = express();
@@ -54,7 +56,8 @@ export default function serverStart(workerId, options = {}) {
       version: opts.version
     }),
     baseUrl: opts.version ? `${opts.baseUrlPath}/${opts.version}/` : opts.baseUrlPath + '/',
-    styles: opts.styles
+    styles: opts.styles,
+    shims: opts.shims
   });
   app.use(pageBuild.handleRequest.bind(pageBuild));
 
