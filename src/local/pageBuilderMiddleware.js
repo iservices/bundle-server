@@ -23,7 +23,7 @@ class PageBuilderMiddleware {
       this.styles = options.styles.map(style => `<link rel="stylesheet" type="text/css" href="${style}">`);
     }
     if (options.shims) {
-      this.shims = options.shims.map(shim => this.bundleManager.formatScriptTag('apps', shim));
+      this.shims = options.shims.map(shim => this.bundleManager.formatScriptTag('apps', path.join(shim, 'bundle.js.gz')));
     }
 
     const funcs = {};
