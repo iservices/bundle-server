@@ -93,7 +93,7 @@ class PageBuilderMiddleware {
             res.set('cache-control', 'private, max-age=0, no-cache');
             res.send(PageBuilder.renderToTemplate({
               view: result.view,
-              props: result.props,
+              input: result.input,
               scripts: tags,
               styles: self.styles,
               baseUrl: self.baseUrl
