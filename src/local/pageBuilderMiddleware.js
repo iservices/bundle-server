@@ -103,7 +103,8 @@ class PageBuilderMiddleware {
               input: result.input,
               scripts: tags,
               styles: self.styles,
-              baseUrl: self.baseUrl
+              baseUrl: self.baseUrl,
+              baseRoutesUrl: urlPath
             }));
             if (next) {
               next();
