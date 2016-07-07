@@ -61,9 +61,16 @@ class PageBuilderMiddleware {
    */
   handleRequest(req, res, next) {
     const self = this;
+    let urlPath = req.path;
 
     // get script tags
-    const scriptTags = self.bundleManager.getScriptTags(req.path, true);
+    let scriptTags = self.bundleManager.getScriptTags(req.path, true);
+    while (!scriptTags) {
+      urlPath = path.join(urlPath, '..');
+      if (urlPath === '/' || urlPath === '\\') break;
+      scriptTags = self.bundleManager.getScriptTags(urlPath, true);
+    }
+
     if (!scriptTags) {
       // if the given path isn't an application return a 404 response
       res.set('cache-control', 'private, max-age=0, no-cache');
