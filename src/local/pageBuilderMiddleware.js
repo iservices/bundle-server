@@ -93,7 +93,7 @@ class PageBuilderMiddleware {
 
 
       // generate the html that will be returned to the client
-      const getPage = self.getPageFunction(req.path);
+      const getPage = self.getPageFunction(urlPath);
       if (getPage) {
         getPage(req)
           .then(function (result) {
