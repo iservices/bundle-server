@@ -1,7 +1,8 @@
 import * as fto from 'file-tree-object';
 import * as path from 'path';
 import errorHandler from './errorHandlerMiddleware';
-import PageBuilder from 'flux-angular2/lib/local/pageBuilder';
+import PageBuilder from 'reng/lib/local/pageBuilder';
+/* eslint-disable */
 
 /**
  * Express middleware that creates pages from classes in the apps folder.
